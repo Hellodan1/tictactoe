@@ -17,6 +17,11 @@ public class SecondaryController {
     double mouseX = 0, mouseY = 0;
     double screenX = 640, screenY = 480;
 
+    int currentTurn = 1;
+
+    //Zero is blank, 1 is x, 2 is O. I know this would work better as a 2d array however i didn't want to make a 2d arraylist for the rectangles and I am reusing the mouse location method for this
+    int[] gameBoard = {0,0,0,0,0,0,0,0,0};
+
     @FXML
     Line lineX1 = new Line();
     @FXML
@@ -30,7 +35,10 @@ public class SecondaryController {
     @FXML
     Rectangle upperBar = new Rectangle();
     
-    private ArrayList<Rectangle> hoverSquares = new ArrayList<Rectangle>();
+    private ArrayList<ArrayList<Rectangle>> hoverSquaresOuter = new ArrayList<ArrayList<Rectangle>>();
+    private ArrayList<Rectangle> hoverSquaresInner1 = new ArrayList<Rectangle>();
+    private ArrayList<Rectangle> hoverSquaresInner2 = new ArrayList<Rectangle>();
+    private ArrayList<Rectangle> hoverSquaresInner3 = new ArrayList<Rectangle>();
 
     @FXML
     Rectangle hoverSqaure11 = new Rectangle();
@@ -60,15 +68,18 @@ public class SecondaryController {
     private void initialize(){
         
         //there is probably a better way to do this but it works and i want to work on more fun things
-        hoverSquares.add(hoverSqaure11);
-        hoverSquares.add(hoverSqaure12);
-        hoverSquares.add(hoverSqaure13);
-        hoverSquares.add(hoverSqaure21);
-        hoverSquares.add(hoverSqaure22);
-        hoverSquares.add(hoverSqaure23);
-        hoverSquares.add(hoverSqaure31);
-        hoverSquares.add(hoverSqaure32);
-        hoverSquares.add(hoverSqaure33);
+        hoverSquaresInner1.add(hoverSqaure11);
+        hoverSquaresInner1.add(hoverSqaure12);
+        hoverSquaresInner1.add(hoverSqaure13);
+        hoverSquaresInner2.add(hoverSqaure21);
+        hoverSquaresInner2.add(hoverSqaure22);
+        hoverSquaresInner2.add(hoverSqaure23);
+        hoverSquaresInner3.add(hoverSqaure31);
+        hoverSquaresInner3.add(hoverSqaure32);
+        hoverSquaresInner3.add(hoverSqaure33);
+        hoverSquaresOuter.add(hoverSquaresInner1);
+        hoverSquaresOuter.add(hoverSquaresInner2);
+        hoverSquaresOuter.add(hoverSquaresInner3);
 
         //this binds the size of the game board to the size of the window
         lineX1.endXProperty().bind(gridPane.widthProperty());
@@ -86,21 +97,22 @@ public class SecondaryController {
         //see if i can modify this shit later so it isnt that weird number data type
         gridPane.widthProperty().addListener((ChangeListener<? super Number>) new ChangeListener<Number>() {
         @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-            System.out.println("Width: " + newSceneWidth);
-            for(int ctr = 0; ctr < 9; ctr++){
-                hoverSquares.get(ctr).setWidth((double)newSceneWidth/3);
-                System.out.println(ctr);
-                screenX = (double)newSceneWidth;
+            for(int ctr = 0; ctr < 3; ctr++){
+                for(int ctr2 = 0; ctr2<3; ctr2++) {
+                    hoverSquaresOuter.get(ctr).get(ctr2).setWidth((double)newSceneWidth/3);
+                    screenX = (double)newSceneWidth;
+                }
+                
             }
         }
     });
         gridPane.heightProperty().addListener(new ChangeListener<Number>() {
         @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-            System.out.println("Height: " + newSceneHeight);
-            for(int ctr = 0; ctr < 9; ctr++){
-                hoverSquares.get(ctr).setHeight((double)newSceneHeight/3);
-                System.out.println(ctr);
-                screenY = (double)newSceneHeight;
+            for(int ctr = 0; ctr < 3; ctr++){
+                for(int ctr2 = 0; ctr2<3; ctr2++) {
+                    hoverSquaresOuter.get(ctr).get(ctr2).setHeight((double)newSceneHeight/3);
+                    screenY = (double)newSceneHeight;
+                }
             }
         }
     });
@@ -113,9 +125,16 @@ public class SecondaryController {
             mouseX = event.getX();
             mouseY = event.getY();
             changeOpacity();
-            //System.out.println("Mouse location is X: " + mouseX + " Y: " + mouseY);
         }
             
+    });
+
+    gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+        @Override
+        public void handle(MouseEvent click) {
+            //mouseClicked();
+        }
     });
 
     }
@@ -123,29 +142,52 @@ public class SecondaryController {
     //this is used to put a shadow on the box im hovering over
     @FXML
     private void changeOpacity() {
-        int locationX;
+        for(int ctr = 0; ctr < 3; ctr++){
+            for(int ctr2 = 0; ctr2<3; ctr2++) {
+                hoverSquaresOuter.get(ctr).get(ctr2).setOpacity(0);
+            }
+        }
+        hoverSquaresOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()).setOpacity(0.2);
+    }
+
+    /*
+    private void mouseClicked() {
+        if (gameBoard[mouseLocationFinder()] == 0) {
+            gameBoard[mouseLocationFinder()] = currentTurn;
+            if(currentTurn==1) {
+                currentTurn = 2;
+            } 
+            else {
+                currentTurn = 1;
+            }
+        }
+        for(int ctr = 0; ctr < 9; ctr++) {
+            System.out.println(gameBoard[ctr]);
+        }
+    }
+    */
+
+    //find the square hat the mouse is in
+    private int mouseLocationFinderX() {
         if (mouseX<screenX/3) {
-            locationX=1;
+            return 0;
         }
         else if (mouseX<screenX/3*2){
-            locationX=2;
+            return 1;
         }
         else {
-            locationX=3;
+            return 2;
         }
-        int locationY;
+    }
+    private int mouseLocationFinderY() {
         if(mouseY<screenY/3) {
-            locationY = 0;
+            return 0;
         }
         else if(mouseY<screenY/3*2) {
-            locationY = 3;
+            return 1;
         }
         else {
-            locationY = 6;
+            return 2;
         }
-        for (int ctr = 0; ctr < 9; ctr++) {
-            hoverSquares.get(ctr).setOpacity(0);
-        }
-        hoverSquares.get(locationX+locationY-1).setOpacity(0.2);
     }
 }
