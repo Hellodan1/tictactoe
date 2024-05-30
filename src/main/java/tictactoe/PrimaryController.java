@@ -31,7 +31,7 @@ public class PrimaryController {
         opponentOptions.add("Multiplayer");
         opponentOptions.add("CPU");
         opponentSelect.getItems().addAll(opponentOptions);
-        opponentSelect.setValue("Multiplayer");;
+        opponentSelect.setValue("Multiplayer");
     }
 
     @FXML

@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
-<?import java.util.ArrayList?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tictactoe.SecondaryController">
    <center>
@@ -29,15 +28,15 @@
             <Line fx:id="lineX2" endX="400.0" strokeWidth="4.0" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
             <Line fx:id="lineY1" endX="-105.0" endY="360.6385192871094" startX="-105.0" startY="-14.13305950164795" strokeWidth="4.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
             <Line fx:id="lineY2" endX="-105.0" endY="360.6385192871094" startX="-105.0" startY="-14.13305950164795" strokeWidth="4.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-            <Rectangle fx:id="hoverSqaure21" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Rectangle fx:id="hoverSqaure13" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="2" />
-            <Rectangle fx:id="hoverSqaure33" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="1.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Rectangle fx:id="hoverSqaure12" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="1" />
-            <Rectangle fx:id="hoverSqaure23" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Rectangle fx:id="hoverSqaure31" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.rowIndex="2" />
-            <Rectangle fx:id="hoverSqaure32" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Rectangle fx:id="hoverSqaure22" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Rectangle fx:id="hoverSqaure11" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" />
+            <Rectangle fx:id="hoverSqaure21" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Rectangle fx:id="hoverSqaure13" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="2" />
+            <Rectangle fx:id="hoverSqaure33" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Rectangle fx:id="hoverSqaure12" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="1" />
+            <Rectangle fx:id="hoverSqaure23" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Rectangle fx:id="hoverSqaure31" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.rowIndex="2" />
+            <Rectangle fx:id="hoverSqaure32" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Rectangle fx:id="hoverSqaure22" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Rectangle fx:id="hoverSqaure11" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" />
          </children>
       </GridPane>
    </center>

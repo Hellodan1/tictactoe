@@ -3,6 +3,7 @@ package tictactoe;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,7 +23,8 @@ public class App extends Application {
         scene = new Scene(loadFXML("menu"), 640, 480);
         stage.setScene(scene);
         stage.show();
-
+        stage.setMinHeight(480);
+        stage.setMinWidth(640);
     }
 
     static void setRoot(String fxml) throws IOException {
