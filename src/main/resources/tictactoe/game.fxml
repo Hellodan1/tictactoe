@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import java.util.ArrayList?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tictactoe.SecondaryController">
+   <center>
+      <GridPane fx:id="gridPane" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Line fx:id="lineX1" endX="400.0" strokeWidth="4.0" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <Line fx:id="lineX2" endX="400.0" strokeWidth="4.0" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Line fx:id="lineY1" endX="-105.0" endY="360.6385192871094" startX="-105.0" startY="-14.13305950164795" strokeWidth="4.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <Line fx:id="lineY2" endX="-105.0" endY="360.6385192871094" startX="-105.0" startY="-14.13305950164795" strokeWidth="4.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <Rectangle fx:id="hoverSqaure21" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Rectangle fx:id="hoverSqaure13" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="2" />
+            <Rectangle fx:id="hoverSqaure33" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="1.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Rectangle fx:id="hoverSqaure12" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="1" />
+            <Rectangle fx:id="hoverSqaure23" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Rectangle fx:id="hoverSqaure31" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.rowIndex="2" />
+            <Rectangle fx:id="hoverSqaure32" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Rectangle fx:id="hoverSqaure22" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Rectangle fx:id="hoverSqaure11" arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="120.0" onMouseEntered="#changeOpacity" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="135.0" />
+         </children>
+      </GridPane>
+   </center>
+   <top>
+      <Pane prefHeight="39.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="42.0" prefWidth="400.0" />
+            <Rectangle fx:id="upperBar" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="400.0" />
+            <Button fx:id="exitButton" layoutX="6.0" layoutY="8.0" mnemonicParsing="false" onAction="#switchToPrimary" prefHeight="25.0" prefWidth="25.0" text="X" />
+         </children>
+      </Pane>
+   </top>
+</BorderPane>
