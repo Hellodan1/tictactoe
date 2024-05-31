@@ -77,7 +77,7 @@ public class SecondaryController {
     @FXML
     Rectangle hoverSqaure33 = new Rectangle();
 
-    //Game board array. Zero is blank, 1 is x, 2 is O
+    //Game board array. Zero is blank, 1 is x, 20 is O
     private ArrayList<ArrayList<Integer>> gameBoardOuter = new ArrayList<ArrayList<Integer>>();
     private ArrayList<Integer> gameBoardInner1 = new ArrayList<Integer>();
     private ArrayList<Integer> gameBoardInner2 = new ArrayList<Integer>();
@@ -212,8 +212,9 @@ public class SecondaryController {
         if (gameBoardOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()) == 0) {
             gameBoardOuter.get(mouseLocationFinderY()).set(mouseLocationFinderX(),currentTurn);
             refreshBoard();
+            winDetect();
             if(currentTurn==1) {
-                currentTurn = 2;
+                currentTurn = 20;
             } 
             else {
                 currentTurn = 1;
@@ -252,10 +253,46 @@ public class SecondaryController {
                 if (gameBoardOuter.get(ctr).get(ctr2) == 1) {
                     gamePieceOuter.get(ctr).get(ctr2).setImage(xImage);
                 }
-                else if (gameBoardOuter.get(ctr).get(ctr2) == 2) {
+                else if (gameBoardOuter.get(ctr).get(ctr2) == 20) {
                     gamePieceOuter.get(ctr).get(ctr2).setImage(oImage);
                 }
             }
         }
+    }
+
+    private void winDetect() {
+        
+        //Horizontal dectection
+        for(int ctr = 0; ctr<3; ctr++){
+            if (gameBoardOuter.get(ctr).get(0)+gameBoardOuter.get(ctr).get(1)+gameBoardOuter.get(ctr).get(2) == 3) {
+                System.out.println("X Wins");
+            } else if (gameBoardOuter.get(ctr).get(0)+gameBoardOuter.get(ctr).get(1)+gameBoardOuter.get(ctr).get(2) == 60) {
+                System.out.println("O Wins");
+            }
+        }
+
+        //Vertical detection
+        for(int ctr = 0; ctr<3; ctr++){
+            if (gameBoardOuter.get(0).get(ctr)+gameBoardOuter.get(1).get(ctr)+gameBoardOuter.get(2).get(ctr) == 3) {
+                System.out.println("X Wins");
+            } else if (gameBoardOuter.get(0).get(ctr)+gameBoardOuter.get(1).get(ctr)+gameBoardOuter.get(2).get(ctr) == 60) {
+                System.out.println("O Wins");
+            }
+        }
+
+        //diagonal top left to bottom right detection
+        if (gameBoardOuter.get(0).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(2).get(2) == 3) {
+            System.out.println("X Wins diagonal 1");
+        } else if (gameBoardOuter.get(0).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(2).get(2) == 60) {
+            System.out.println("O Wins diagonal 1");
+        }
+
+        //diagonal bottom left to bottom right detection
+        if (gameBoardOuter.get(2).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(0).get(2) == 3) {
+            System.out.println("X Wins diagonal 2");
+        } else if (gameBoardOuter.get(2).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(0).get(2) == 60) {
+            System.out.println("O Wins diagonal 2");
+        }
+        
     }
 }
