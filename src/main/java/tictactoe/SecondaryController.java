@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
@@ -33,6 +34,8 @@ public class SecondaryController {
     GridPane gridPane;
     @FXML
     Rectangle upperBar = new Rectangle();
+    @FXML
+    HBox upperBarHBox = new HBox();
 
     //objects used for game pieces
     @FXML
@@ -117,12 +120,12 @@ public class SecondaryController {
         hoverSquaresOuter.add(hoverSquaresInner2);
         hoverSquaresOuter.add(hoverSquaresInner3);
         
-        //sets the gameboard to the default blank value
-        for(int ctr = 1; ctr <=3; ctr++) {
+        for(int ctr = 0; ctr <3; ctr++) {
             gameBoardInner1.add(0);
             gameBoardInner2.add(0);
             gameBoardInner3.add(0);
         }
+        
         gameBoardOuter.add(gameBoardInner1);
         gameBoardOuter.add(gameBoardInner2);
         gameBoardOuter.add(gameBoardInner3);
@@ -157,6 +160,7 @@ public class SecondaryController {
                         hoverSquaresOuter.get(ctr).get(ctr2).setWidth((double)newSceneWidth/3);
                         gamePieceOuter.get(ctr).get(ctr2).setFitWidth((double)newSceneWidth/3-20);
                         screenX = (double)newSceneWidth;
+                        upperBarHBox.setPrefWidth((double)newSceneWidth);
                     }
                     
                 }
@@ -213,7 +217,7 @@ public class SecondaryController {
         if (gameBoardOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()) == 0) {
             gameBoardOuter.get(mouseLocationFinderY()).set(mouseLocationFinderX(),currentTurn);
             refreshBoard();
-            winDetect();
+            System.out.println(winDetect());
             if(currentTurn==1) {
                 currentTurn = 20;
             } 
@@ -261,14 +265,16 @@ public class SecondaryController {
         }
     }
 
-    private void winDetect() {
-        
+    private int winDetect() {
+        int win = 0;
         //Horizontal dectection
         for(int ctr = 0; ctr<3; ctr++){
             if (gameBoardOuter.get(ctr).get(0)+gameBoardOuter.get(ctr).get(1)+gameBoardOuter.get(ctr).get(2) == 3) {
                 System.out.println("X Wins");
+                win = 1;
             } else if (gameBoardOuter.get(ctr).get(0)+gameBoardOuter.get(ctr).get(1)+gameBoardOuter.get(ctr).get(2) == 60) {
                 System.out.println("O Wins");
+                win = 20;
             }
         }
 
@@ -276,24 +282,39 @@ public class SecondaryController {
         for(int ctr = 0; ctr<3; ctr++){
             if (gameBoardOuter.get(0).get(ctr)+gameBoardOuter.get(1).get(ctr)+gameBoardOuter.get(2).get(ctr) == 3) {
                 System.out.println("X Wins");
+                win = 1;
             } else if (gameBoardOuter.get(0).get(ctr)+gameBoardOuter.get(1).get(ctr)+gameBoardOuter.get(2).get(ctr) == 60) {
                 System.out.println("O Wins");
+                win = 20;
             }
         }
 
         //diagonal top left to bottom right detection
         if (gameBoardOuter.get(0).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(2).get(2) == 3) {
             System.out.println("X Wins diagonal 1");
+            win = 1;
         } else if (gameBoardOuter.get(0).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(2).get(2) == 60) {
             System.out.println("O Wins diagonal 1");
+            win = 20;
         }
 
         //diagonal bottom left to bottom right detection
         if (gameBoardOuter.get(2).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(0).get(2) == 3) {
             System.out.println("X Wins diagonal 2");
+            win = 1;
         } else if (gameBoardOuter.get(2).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(0).get(2) == 60) {
             System.out.println("O Wins diagonal 2");
+            win = 20;
+        }  
+
+        return win;
+    }
+
+    private void resetGameBoard(){
+        for(int ctr = 0; ctr <3; ctr++) {
+            gameBoardInner1.set(ctr,0);
+            gameBoardInner2.set(ctr,0);
+            gameBoardInner3.set(ctr,0);
         }
-        
     }
 }
