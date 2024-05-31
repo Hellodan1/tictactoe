@@ -7,6 +7,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
@@ -18,9 +20,6 @@ public class SecondaryController {
     double screenX = 640, screenY = 480;
 
     int currentTurn = 1;
-
-    //Zero is blank, 1 is x, 2 is O. I know this would work better as a 2d array however i didn't want to make a 2d arraylist for the rectangles and I am reusing the mouse location method for this
-    int[] gameBoard = {0,0,0,0,0,0,0,0,0};
 
     @FXML
     Line lineX1 = new Line();
@@ -34,12 +33,31 @@ public class SecondaryController {
     GridPane gridPane;
     @FXML
     Rectangle upperBar = new Rectangle();
-    
-    private ArrayList<ArrayList<Rectangle>> hoverSquaresOuter = new ArrayList<ArrayList<Rectangle>>();
-    private ArrayList<Rectangle> hoverSquaresInner1 = new ArrayList<Rectangle>();
-    private ArrayList<Rectangle> hoverSquaresInner2 = new ArrayList<Rectangle>();
-    private ArrayList<Rectangle> hoverSquaresInner3 = new ArrayList<Rectangle>();
 
+    //objects used for game pieces
+    @FXML
+    ImageView piece11 = new ImageView();
+    @FXML
+    ImageView piece12 = new ImageView();
+    @FXML
+    ImageView piece13 = new ImageView();
+    @FXML
+    ImageView piece21 = new ImageView();
+    @FXML
+    ImageView piece22 = new ImageView();
+    @FXML
+    ImageView piece23 = new ImageView();
+    @FXML
+    ImageView piece31 = new ImageView();
+    @FXML
+    ImageView piece32 = new ImageView();
+    @FXML
+    ImageView piece33 = new ImageView();
+    Image xImage = new Image(getClass().getResourceAsStream("x.png"));
+    Image oImage = new Image(getClass().getResourceAsStream("o.png"));
+
+
+    //objects used for the hovering effect
     @FXML
     Rectangle hoverSqaure11 = new Rectangle();
     @FXML
@@ -59,6 +77,24 @@ public class SecondaryController {
     @FXML
     Rectangle hoverSqaure33 = new Rectangle();
 
+    //Game board array. Zero is blank, 1 is x, 2 is O
+    private ArrayList<ArrayList<Integer>> gameBoardOuter = new ArrayList<ArrayList<Integer>>();
+    private ArrayList<Integer> gameBoardInner1 = new ArrayList<Integer>();
+    private ArrayList<Integer> gameBoardInner2 = new ArrayList<Integer>();
+    private ArrayList<Integer> gameBoardInner3 = new ArrayList<Integer>();
+
+    //Game piece array
+    private ArrayList<ArrayList<ImageView>> gamePieceOuter = new ArrayList<ArrayList<ImageView>>();
+    private ArrayList<ImageView> gamePieceInner1 = new ArrayList<ImageView>();
+    private ArrayList<ImageView> gamePieceInner2 = new ArrayList<ImageView>();
+    private ArrayList<ImageView> gamePieceInner3 = new ArrayList<ImageView>();
+
+    //Hover effect array
+    private ArrayList<ArrayList<Rectangle>> hoverSquaresOuter = new ArrayList<ArrayList<Rectangle>>();
+    private ArrayList<Rectangle> hoverSquaresInner1 = new ArrayList<Rectangle>();
+    private ArrayList<Rectangle> hoverSquaresInner2 = new ArrayList<Rectangle>();
+    private ArrayList<Rectangle> hoverSquaresInner3 = new ArrayList<Rectangle>();
+
     @FXML
     private void switchToPrimary() throws IOException {
         App.setRoot("menu");
@@ -67,7 +103,7 @@ public class SecondaryController {
     @FXML
     private void initialize(){
         
-        //there is probably a better way to do this but it works and i want to work on more fun things
+        //adds all the hover squares into their corresponding arrays
         hoverSquaresInner1.add(hoverSqaure11);
         hoverSquaresInner1.add(hoverSqaure12);
         hoverSquaresInner1.add(hoverSqaure13);
@@ -80,6 +116,31 @@ public class SecondaryController {
         hoverSquaresOuter.add(hoverSquaresInner1);
         hoverSquaresOuter.add(hoverSquaresInner2);
         hoverSquaresOuter.add(hoverSquaresInner3);
+        
+        //sets the gameboard to the default blank value
+        for(int ctr = 1; ctr <=3; ctr++) {
+            gameBoardInner1.add(0);
+            gameBoardInner2.add(0);
+            gameBoardInner3.add(0);
+        }
+        gameBoardOuter.add(gameBoardInner1);
+        gameBoardOuter.add(gameBoardInner2);
+        gameBoardOuter.add(gameBoardInner3);
+
+        //sets the game piece array
+        gamePieceInner1.add(piece11);
+        gamePieceInner1.add(piece12);
+        gamePieceInner1.add(piece13);
+        gamePieceInner2.add(piece21);
+        gamePieceInner2.add(piece22);
+        gamePieceInner2.add(piece23);
+        gamePieceInner3.add(piece31);
+        gamePieceInner3.add(piece32);
+        gamePieceInner3.add(piece33);
+        gamePieceOuter.add(gamePieceInner1);
+        gamePieceOuter.add(gamePieceInner2);
+        gamePieceOuter.add(gamePieceInner3);
+
 
         //this binds the size of the game board to the size of the window
         lineX1.endXProperty().bind(gridPane.widthProperty());
@@ -88,11 +149,8 @@ public class SecondaryController {
         lineY2.endYProperty().bind(gridPane.heightProperty());
         upperBar.widthProperty().bind(gridPane.widthProperty());
 
-        /* 
-        for(int ctr = 0; ctr < 9; ctr++){
-            hoverSquares.get(ctr).setOpacity(0.5);
-        }
-        */
+        //binds the Xs and Os sizes
+
 
         //see if i can modify this shit later so it isnt that weird number data type
         gridPane.widthProperty().addListener((ChangeListener<? super Number>) new ChangeListener<Number>() {
@@ -133,7 +191,7 @@ public class SecondaryController {
 
         @Override
         public void handle(MouseEvent click) {
-            //mouseClicked();
+            mouseClicked();
         }
     });
 
@@ -150,10 +208,10 @@ public class SecondaryController {
         hoverSquaresOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()).setOpacity(0.2);
     }
 
-    /*
     private void mouseClicked() {
-        if (gameBoard[mouseLocationFinder()] == 0) {
-            gameBoard[mouseLocationFinder()] = currentTurn;
+        if (gameBoardOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()) == 0) {
+            gameBoardOuter.get(mouseLocationFinderY()).set(mouseLocationFinderX(),currentTurn);
+            refreshBoard();
             if(currentTurn==1) {
                 currentTurn = 2;
             } 
@@ -161,11 +219,7 @@ public class SecondaryController {
                 currentTurn = 1;
             }
         }
-        for(int ctr = 0; ctr < 9; ctr++) {
-            System.out.println(gameBoard[ctr]);
-        }
     }
-    */
 
     //find the square hat the mouse is in
     private int mouseLocationFinderX() {
@@ -188,6 +242,20 @@ public class SecondaryController {
         }
         else {
             return 2;
+        }
+    }
+    
+    @FXML //it will set the image roots depending on what it sees in the gameboard arraw
+    private void refreshBoard(){
+        for (int ctr = 0; ctr < 3; ctr++) {
+            for (int ctr2 = 0; ctr2 < 3; ctr2++) {
+                if (gameBoardOuter.get(ctr).get(ctr2) == 1) {
+                    gamePieceOuter.get(ctr).get(ctr2).setImage(xImage);
+                }
+                else if (gameBoardOuter.get(ctr).get(ctr2) == 2) {
+                    gamePieceOuter.get(ctr).get(ctr2).setImage(oImage);
+                }
+            }
         }
     }
 }

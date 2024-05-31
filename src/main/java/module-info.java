@@ -1,6 +1,7 @@
 module tictactoe {
-    requires javafx.controls;
-    requires javafx.fxml;
+    requires javafx.graphics;
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
     requires java.desktop;
 
     opens tictactoe to javafx.fxml;
