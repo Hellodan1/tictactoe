@@ -149,31 +149,32 @@ public class SecondaryController {
         lineY2.endYProperty().bind(gridPane.heightProperty());
         upperBar.widthProperty().bind(gridPane.widthProperty());
 
-        //binds the Xs and Os sizes
-
-
-        //see if i can modify this shit later so it isnt that weird number data type
+        //this is for dynamically(i think that is the right word) changing the width of the shadow rectangles and game pieces as the window grows
         gridPane.widthProperty().addListener((ChangeListener<? super Number>) new ChangeListener<Number>() {
-        @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-            for(int ctr = 0; ctr < 3; ctr++){
-                for(int ctr2 = 0; ctr2<3; ctr2++) {
-                    hoverSquaresOuter.get(ctr).get(ctr2).setWidth((double)newSceneWidth/3);
-                    screenX = (double)newSceneWidth;
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                for(int ctr = 0; ctr < 3; ctr++){
+                    for(int ctr2 = 0; ctr2<3; ctr2++) {
+                        hoverSquaresOuter.get(ctr).get(ctr2).setWidth((double)newSceneWidth/3);
+                        gamePieceOuter.get(ctr).get(ctr2).setFitWidth((double)newSceneWidth/3-20);
+                        screenX = (double)newSceneWidth;
+                    }
+                    
                 }
-                
             }
-        }
-    });
+        });
+
+        //this is for dynamically(i think that is the right word) changing the height of the shadow rectangles and game pieces as the window grows
         gridPane.heightProperty().addListener(new ChangeListener<Number>() {
-        @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-            for(int ctr = 0; ctr < 3; ctr++){
-                for(int ctr2 = 0; ctr2<3; ctr2++) {
-                    hoverSquaresOuter.get(ctr).get(ctr2).setHeight((double)newSceneHeight/3);
-                    screenY = (double)newSceneHeight;
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                for(int ctr = 0; ctr < 3; ctr++){
+                    for(int ctr2 = 0; ctr2<3; ctr2++) {
+                        hoverSquaresOuter.get(ctr).get(ctr2).setHeight((double)newSceneHeight/3);
+                        gamePieceOuter.get(ctr).get(ctr2).setFitHeight((double)newSceneHeight/3-20);
+                        screenY = (double)newSceneHeight;
+                    }
                 }
             }
-        }
-    });
+        });
 
     //listner for mouse location on the game grid! (this took way too long to figure out)
     gridPane.setOnMouseMoved(new EventHandler<MouseEvent>() {
