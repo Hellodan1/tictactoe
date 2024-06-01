@@ -252,7 +252,7 @@ public class SecondaryController {
             }
             winDetect();
 
-            if (turnCount == 9) {
+            if (turnCount == 9 && win == 0) {
                 topText.setText("Tie!");
             }
         }
