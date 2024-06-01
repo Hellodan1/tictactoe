@@ -56,18 +56,30 @@
    <top>
       <Pane prefHeight="39.0" prefWidth="400.0" BorderPane.alignment="CENTER">
          <children>
-            <Rectangle fx:id="upperBar" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="46.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="400.0" />
+            <Rectangle fx:id="upperBar" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="42.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="405.0" />
             <HBox fx:id="upperBarHBox" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="400.0">
                <children>
                   <Button fx:id="exitButton" mnemonicParsing="false" onAction="#switchToPrimary" prefHeight="25.0" prefWidth="25.0" text="X" HBox.hgrow="ALWAYS" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tic Tac Toe" translateX="-15.3">
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tic Tac Toe" translateX="45.9">
                            <font>
                               <Font name="Arial Bold" size="30.0" />
                            </font>
                         </Text>
                      </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="42.0" prefWidth="113.6" HBox.hgrow="NEVER">
+                     <children>
+                        <Text fx:id="gameScore" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0 - 0" wrappingWidth="63.193359375">
+                           <font>
+                              <Font name="System Bold" size="30.0" />
+                           </font>
+                        </Text>
+                     </children>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
                   </HBox>
                </children>
                <padding>
