@@ -56,13 +56,13 @@
    <top>
       <Pane prefHeight="39.0" prefWidth="400.0" BorderPane.alignment="CENTER">
          <children>
-            <Rectangle fx:id="upperBar" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="42.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="405.0" />
+            <Rectangle fx:id="upperBar" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="42.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="400.0" />
             <HBox fx:id="upperBarHBox" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="400.0">
                <children>
                   <Button fx:id="exitButton" mnemonicParsing="false" onAction="#switchToPrimary" prefHeight="25.0" prefWidth="25.0" text="X" HBox.hgrow="ALWAYS" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tic Tac Toe" translateX="45.9">
+                        <Text fx:id="topText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tic Tac Toe" translateX="45.9">
                            <font>
                               <Font name="Arial Bold" size="30.0" />
                            </font>
@@ -71,7 +71,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="42.0" prefWidth="113.6" HBox.hgrow="NEVER">
                      <children>
-                        <Text fx:id="gameScore" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0 - 0" wrappingWidth="63.193359375">
+                        <Text fx:id="gameScore" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0 - 0" textAlignment="RIGHT" textOrigin="TOP" wrappingWidth="105.693359375">
                            <font>
                               <Font name="System Bold" size="30.0" />
                            </font>
@@ -88,4 +88,20 @@
          </children>
       </Pane>
    </top>
+   <bottom>
+      <Pane prefHeight="33.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <Rectangle fx:id="bottomBar" arcHeight="5.0" arcWidth="5.0" fill="#ffa31f" height="36.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="400.0" />
+            <HBox fx:id="bottomHBox" alignment="CENTER" prefHeight="36.0" prefWidth="400.0">
+               <children>
+                  <Button fx:id="playAgainButton" alignment="CENTER" mnemonicParsing="false" onAction="#playAgain" prefHeight="0.0" prefWidth="78.0" text="Play Again" HBox.hgrow="NEVER">
+                     <HBox.margin>
+                        <Insets bottom="5.0" top="1.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+   </bottom>
 </BorderPane>

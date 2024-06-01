@@ -7,6 +7,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +24,8 @@ public class SecondaryController {
 
     int currentTurn = 1;
     int xWinCount  = 0, oWinCount  = 0;
+    int turnCount = 0;
+    int win = 0;
 
     @FXML
     Line lineX1 = new Line();
@@ -40,6 +43,14 @@ public class SecondaryController {
     HBox upperBarHBox = new HBox();
     @FXML
     Text gameScore = new Text();
+    @FXML 
+    Rectangle bottomBar = new Rectangle();
+    @FXML
+    HBox bottomHBox = new HBox();
+    @FXML
+    Text topText = new Text();
+    @FXML
+    Button playAgainButton = new Button();
 
     //objects used for game pieces
     @FXML
@@ -108,6 +119,13 @@ public class SecondaryController {
     }
 
     @FXML
+    private void playAgain() throws IOException {
+        turnCount = 0;
+        resetGameBoard();
+        refreshBoard();
+    }
+
+    @FXML
     private void initialize(){
         
         //adds all the hover squares into their corresponding arrays
@@ -155,6 +173,7 @@ public class SecondaryController {
         lineY1.endYProperty().bind(gridPane.heightProperty());
         lineY2.endYProperty().bind(gridPane.heightProperty());
         upperBar.widthProperty().bind(gridPane.widthProperty());
+        bottomBar.widthProperty().bind(gridPane.widthProperty());
 
         //this is for dynamically(i think that is the right word) changing the width of the shadow rectangles and game pieces as the window grows
         gridPane.widthProperty().addListener((ChangeListener<? super Number>) new ChangeListener<Number>() {
@@ -165,6 +184,7 @@ public class SecondaryController {
                         gamePieceOuter.get(ctr).get(ctr2).setFitWidth((double)newSceneWidth/3-20);
                         screenX = (double)newSceneWidth;
                         upperBarHBox.setPrefWidth((double)newSceneWidth);
+                        bottomHBox.setPrefWidth((double)newSceneWidth);
                     }
                     
                 }
@@ -214,22 +234,29 @@ public class SecondaryController {
                 hoverSquaresOuter.get(ctr).get(ctr2).setOpacity(0);
             }
         }
-        hoverSquaresOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()).setOpacity(0.2);
+        if (win == 0 && turnCount != 9) {
+            hoverSquaresOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()).setOpacity(0.2);
+        }
     }
 
+    //this method runs whenver the mouse clicks. it locates what square the mouse is in and sets it to the corresponding value if there isnt already a game piece in it
     private void mouseClicked() {
-        int win = 0;
-        if (gameBoardOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()) == 0) {
+        if (gameBoardOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()) == 0 && win == 0) {
+            turnCount++;
             gameBoardOuter.get(mouseLocationFinderY()).set(mouseLocationFinderX(),currentTurn);
-            win = winDetect();
-            refreshBoard();
-            if(currentTurn==1&&win==0) {
+            if(currentTurn==1) {
                 currentTurn = 20;
             } 
-            else if(currentTurn==20&&win==0) {
+            else if(currentTurn==20) {
                 currentTurn = 1;
             }
+            winDetect();
+
+            if (turnCount == 9) {
+                topText.setText("Tie!");
+            }
         }
+        refreshBoard();
     }
 
     //find the square hat the mouse is in
@@ -275,18 +302,19 @@ public class SecondaryController {
         gameScore.setText(xWinCount + " - " + oWinCount);
     }
 
-    private int winDetect() {
-        int win = 0;
+    private void winDetect() {
+        win = 0;
+
         //Horizontal dectection
         for(int ctr = 0; ctr<3; ctr++){
             if (gameBoardOuter.get(ctr).get(0)+gameBoardOuter.get(ctr).get(1)+gameBoardOuter.get(ctr).get(2) == 3) {
                 win = 1;
                 xWinCount++;
-                resetGameBoard();
+                topText.setText("X Wins");
             } else if (gameBoardOuter.get(ctr).get(0)+gameBoardOuter.get(ctr).get(1)+gameBoardOuter.get(ctr).get(2) == 60) {
                 win = 20;
                 oWinCount++;
-                resetGameBoard();
+                topText.setText("O Wins");
             }
         }
 
@@ -295,11 +323,11 @@ public class SecondaryController {
             if (gameBoardOuter.get(0).get(ctr)+gameBoardOuter.get(1).get(ctr)+gameBoardOuter.get(2).get(ctr) == 3) {
                 win = 1;
                 xWinCount++;
-                resetGameBoard();
+                topText.setText("X Wins");
             } else if (gameBoardOuter.get(0).get(ctr)+gameBoardOuter.get(1).get(ctr)+gameBoardOuter.get(2).get(ctr) == 60) {
                 win = 20;
                 oWinCount++;
-                resetGameBoard();
+                topText.setText("O Wins");
             }
         }
 
@@ -307,25 +335,23 @@ public class SecondaryController {
         if (gameBoardOuter.get(0).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(2).get(2) == 3) {
             win = 1;
             xWinCount++;
-            resetGameBoard();
+            topText.setText("X Wins");
         } else if (gameBoardOuter.get(0).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(2).get(2) == 60) {
             win = 20;
             oWinCount++;
-            resetGameBoard();
+            topText.setText("O Wins");
         }
 
         //diagonal bottom left to bottom right detection
         if (gameBoardOuter.get(2).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(0).get(2) == 3) {
             win = 1;
             xWinCount++;
-            resetGameBoard();
+            topText.setText("X Wins");
         } else if (gameBoardOuter.get(2).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(0).get(2) == 60) {
             win = 20;
             oWinCount++;
-            resetGameBoard();
+            topText.setText("O Wins");
         }  
-
-        return win;
     }
 
     private void resetGameBoard(){
@@ -335,5 +361,8 @@ public class SecondaryController {
             gameBoardInner3.set(ctr,0);
         }
         currentTurn = 1;
+        topText.setText("Tic Tac Toe");
+        turnCount = 0;
+        win = 0;
     }
 }
