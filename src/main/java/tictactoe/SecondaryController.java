@@ -19,6 +19,8 @@ import javafx.scene.text.Text;
 
 public class SecondaryController {
 
+    int mode = PrimaryController.mode; //have it do all the mouse click stuff in an if lopp that checks if it is even or odd
+    
     double mouseX = 0, mouseY = 0;
     double screenX = 640, screenY = 480;
 
@@ -127,7 +129,7 @@ public class SecondaryController {
 
     @FXML
     private void initialize(){
-        
+
         //adds all the hover squares into their corresponding arrays
         hoverSquaresInner1.add(hoverSqaure11);
         hoverSquaresInner1.add(hoverSqaure12);
@@ -354,6 +356,7 @@ public class SecondaryController {
         }  
     }
 
+    //resets everything
     private void resetGameBoard(){
         for(int ctr = 0; ctr <3; ctr++) {
             gameBoardInner1.set(ctr,0);
