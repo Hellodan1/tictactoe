@@ -19,6 +19,8 @@ import javafx.scene.text.Text;
 
 public class SecondaryController {
 
+    GameBoard board = new GameBoard();
+
     int mode = PrimaryController.mode; //have it do all the mouse click stuff in an if lopp that checks if it is even or odd
     
     double mouseX = 0, mouseY = 0;
@@ -97,12 +99,6 @@ public class SecondaryController {
     @FXML
     Rectangle hoverSqaure33 = new Rectangle();
 
-    //Game board array. Zero is blank, 1 is x, 20 is O
-    private ArrayList<ArrayList<Integer>> gameBoardOuter = new ArrayList<ArrayList<Integer>>();
-    private ArrayList<Integer> gameBoardInner1 = new ArrayList<Integer>();
-    private ArrayList<Integer> gameBoardInner2 = new ArrayList<Integer>();
-    private ArrayList<Integer> gameBoardInner3 = new ArrayList<Integer>();
-
     //Game piece array
     private ArrayList<ArrayList<ImageView>> gamePieceOuter = new ArrayList<ArrayList<ImageView>>();
     private ArrayList<ImageView> gamePieceInner1 = new ArrayList<ImageView>();
@@ -123,13 +119,14 @@ public class SecondaryController {
     @FXML
     private void playAgain() throws IOException {
         turnCount = 0;
-        resetGameBoard();
+        reset();
         refreshBoard();
     }
 
     @FXML
     private void initialize(){
 
+        reset();
         //adds all the hover squares into their corresponding arrays
         hoverSquaresInner1.add(hoverSqaure11);
         hoverSquaresInner1.add(hoverSqaure12);
@@ -143,16 +140,6 @@ public class SecondaryController {
         hoverSquaresOuter.add(hoverSquaresInner1);
         hoverSquaresOuter.add(hoverSquaresInner2);
         hoverSquaresOuter.add(hoverSquaresInner3);
-        
-        for(int ctr = 0; ctr <3; ctr++) {
-            gameBoardInner1.add(0);
-            gameBoardInner2.add(0);
-            gameBoardInner3.add(0);
-        }
-        
-        gameBoardOuter.add(gameBoardInner1);
-        gameBoardOuter.add(gameBoardInner2);
-        gameBoardOuter.add(gameBoardInner3);
 
         //sets the game piece array
         gamePieceInner1.add(piece11);
@@ -236,16 +223,16 @@ public class SecondaryController {
                 hoverSquaresOuter.get(ctr).get(ctr2).setOpacity(0);
             }
         }
-        if (win == 0 && turnCount != 9) {
+        if (board.winDetect() == 0 && turnCount != 9) {
             hoverSquaresOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()).setOpacity(0.2);
         }
     }
 
     //this method runs whenver the mouse clicks. it locates what square the mouse is in and sets it to the corresponding value if there isnt already a game piece in it
     private void mouseClicked() {
-        if (gameBoardOuter.get(mouseLocationFinderY()).get(mouseLocationFinderX()) == 0 && win == 0) {
+        if (board.checkSpace(mouseLocationFinderX(), mouseLocationFinderY()) == 0 && board.winDetect()==0) {
             turnCount++;
-            gameBoardOuter.get(mouseLocationFinderY()).set(mouseLocationFinderX(),currentTurn);
+            board.placePiece(mouseLocationFinderX(), mouseLocationFinderY(), currentTurn);
             if(currentTurn==1) {
                 currentTurn = 20;
             } 
@@ -254,7 +241,7 @@ public class SecondaryController {
             }
             winDetect();
 
-            if (turnCount == 9 && win == 0) {
+            if (turnCount == 9 && board.winDetect() == 0) {
                 topText.setText("Tie!");
             }
         }
@@ -289,13 +276,13 @@ public class SecondaryController {
     private void refreshBoard(){
         for (int ctr = 0; ctr < 3; ctr++) {
             for (int ctr2 = 0; ctr2 < 3; ctr2++) {
-                if (gameBoardOuter.get(ctr).get(ctr2) == 1) {
+                if (board.checkSpace(ctr2, ctr) == 1) {
                     gamePieceOuter.get(ctr).get(ctr2).setImage(xImage);
                 }
-                else if (gameBoardOuter.get(ctr).get(ctr2) == 20) {
+                else if (board.checkSpace(ctr2, ctr) == 20) {
                     gamePieceOuter.get(ctr).get(ctr2).setImage(oImage);
                 }
-                else if (gameBoardOuter.get(ctr).get(ctr2) == 0) {
+                else if (board.checkSpace(ctr2, ctr) == 0) {
                     gamePieceOuter.get(ctr).get(ctr2).setImage(null);;
                 }
 
@@ -305,67 +292,20 @@ public class SecondaryController {
     }
 
     private void winDetect() {
-        win = 0;
-
-        //Horizontal dectection
-        for(int ctr = 0; ctr<3; ctr++){
-            if (gameBoardOuter.get(ctr).get(0)+gameBoardOuter.get(ctr).get(1)+gameBoardOuter.get(ctr).get(2) == 3) {
-                win = 1;
-                xWinCount++;
-                topText.setText("X Wins");
-            } else if (gameBoardOuter.get(ctr).get(0)+gameBoardOuter.get(ctr).get(1)+gameBoardOuter.get(ctr).get(2) == 60) {
-                win = 20;
-                oWinCount++;
-                topText.setText("O Wins");
-            }
-        }
-
-        //Vertical detection
-        for(int ctr = 0; ctr<3; ctr++){
-            if (gameBoardOuter.get(0).get(ctr)+gameBoardOuter.get(1).get(ctr)+gameBoardOuter.get(2).get(ctr) == 3) {
-                win = 1;
-                xWinCount++;
-                topText.setText("X Wins");
-            } else if (gameBoardOuter.get(0).get(ctr)+gameBoardOuter.get(1).get(ctr)+gameBoardOuter.get(2).get(ctr) == 60) {
-                win = 20;
-                oWinCount++;
-                topText.setText("O Wins");
-            }
-        }
-
-        //diagonal top left to bottom right detection
-        if (gameBoardOuter.get(0).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(2).get(2) == 3) {
-            win = 1;
+        if (board.winDetect() == 1) {
             xWinCount++;
-            topText.setText("X Wins");
-        } else if (gameBoardOuter.get(0).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(2).get(2) == 60) {
-            win = 20;
+            topText.setText("X Wins!");
+        } else if (board.winDetect() == 20) {
             oWinCount++;
-            topText.setText("O Wins");
+            topText.setText("O Wins!");
         }
-
-        //diagonal bottom left to bottom right detection
-        if (gameBoardOuter.get(2).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(0).get(2) == 3) {
-            win = 1;
-            xWinCount++;
-            topText.setText("X Wins");
-        } else if (gameBoardOuter.get(2).get(0)+gameBoardOuter.get(1).get(1)+gameBoardOuter.get(0).get(2) == 60) {
-            win = 20;
-            oWinCount++;
-            topText.setText("O Wins");
-        }  
     }
 
     //resets everything
-    private void resetGameBoard(){
-        for(int ctr = 0; ctr <3; ctr++) {
-            gameBoardInner1.set(ctr,0);
-            gameBoardInner2.set(ctr,0);
-            gameBoardInner3.set(ctr,0);
-        }
+    private void reset(){
+        board.resetGameBoard();
         currentTurn = 1;
         topText.setText("Tic Tac Toe");
         turnCount = 0;
-        win = 0;
     }
 }
