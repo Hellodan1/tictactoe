@@ -21,7 +21,13 @@ public class SecondaryController {
 
     GameBoard board = new GameBoard();
 
+    CPULogic cpu = new CPULogic(PrimaryController.difficulty);
+
     int mode = PrimaryController.mode; //have it do all the mouse click stuff in an if lopp that checks if it is even or odd
+
+    int playerStartingPiece = PrimaryController.piece;
+
+    int CPUPiece;
     
     double mouseX = 0, mouseY = 0;
     double screenX = 640, screenY = 480;
@@ -118,15 +124,18 @@ public class SecondaryController {
 
     @FXML
     private void playAgain() throws IOException {
-        turnCount = 0;
         reset();
         refreshBoard();
+        if (mode == 1 && CPUPiece == currentTurn) {
+            runRound();
+        }
     }
 
     @FXML
     private void initialize(){
-
+        
         reset();
+
         //adds all the hover squares into their corresponding arrays
         hoverSquaresInner1.add(hoverSqaure11);
         hoverSquaresInner1.add(hoverSqaure12);
@@ -164,6 +173,12 @@ public class SecondaryController {
         upperBar.widthProperty().bind(gridPane.widthProperty());
         bottomBar.widthProperty().bind(gridPane.widthProperty());
 
+        if (playerStartingPiece == 1) {
+            CPUPiece = 20;
+        } else {
+            CPUPiece = 1;
+        }
+
         //this is for dynamically(i think that is the right word) changing the width of the shadow rectangles and game pieces as the window grows
         gridPane.widthProperty().addListener((ChangeListener<? super Number>) new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
@@ -193,26 +208,32 @@ public class SecondaryController {
             }
         });
 
-    //listner for mouse location on the game grid! (this took way too long to figure out)
-    gridPane.setOnMouseMoved(new EventHandler<MouseEvent>() {
+        //listner for mouse location on the game grid! (this took way too long to figure out)
+        gridPane.setOnMouseMoved(new EventHandler<MouseEvent>() {
 
-        @Override
-        public void handle(MouseEvent event) {
-            mouseX = event.getX();
-            mouseY = event.getY();
-            changeOpacity();
+            @Override
+            public void handle(MouseEvent event) {
+                mouseX = event.getX();
+                mouseY = event.getY();
+                changeOpacity();
+            }
+                
+        });
+
+        gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent click) {
+                if (playerStartingPiece == currentTurn || mode == 0) {
+                    runRound();
+
+                }
+            }
+        });
+
+        if (mode == 1 && CPUPiece == 1) {
+            runRound();
         }
-            
-    });
-
-    gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-        @Override
-        public void handle(MouseEvent click) {
-            mouseClicked();
-        }
-    });
-
     }
 
     //this is used to put a shadow on the box im hovering over
@@ -229,23 +250,50 @@ public class SecondaryController {
     }
 
     //this method runs whenver the mouse clicks. it locates what square the mouse is in and sets it to the corresponding value if there isnt already a game piece in it
-    private void mouseClicked() {
-        if (board.checkSpace(mouseLocationFinderX(), mouseLocationFinderY()) == 0 && board.winDetect()==0) {
-            turnCount++;
-            board.placePiece(mouseLocationFinderX(), mouseLocationFinderY(), currentTurn);
-            if(currentTurn==1) {
-                currentTurn = 20;
-            } 
-            else if(currentTurn==20) {
-                currentTurn = 1;
-            }
-            winDetect();
-
-            if (turnCount == 9 && board.winDetect() == 0) {
-                topText.setText("Tie!");
+    private void runRound() {
+        if (mode == 0) {
+            if(board.checkSpace(mouseLocationFinderX(), mouseLocationFinderY()) == 0 && board.winDetect() == 0) {
+                board.placePiece(mouseLocationFinderX(), mouseLocationFinderY(), currentTurn);
+                turnCount++;
+                winDetect();
+                refreshBoard();
+                turnSwap();
             }
         }
-        refreshBoard();
+        
+        if (mode == 1) {
+            if (CPUPiece == currentTurn && board.winDetect() == 0 && turnCount < 9) {
+                cpu.runCPU(board, CPUPiece);
+                turnCount++;
+                winDetect();
+                turnSwap();
+                refreshBoard();
+            } else if (playerStartingPiece == currentTurn && board.winDetect() == 0 && turnCount < 9) {
+                if(board.checkSpace(mouseLocationFinderX(), mouseLocationFinderY()) == 0) {
+                    board.placePiece(mouseLocationFinderX(), mouseLocationFinderY(), currentTurn);
+                    turnCount++;
+                winDetect();
+                turnSwap();
+                refreshBoard();
+                }
+            }
+            
+            if (currentTurn == CPUPiece && turnCount < 9 && board.winDetect() == 0) {
+                runRound();
+            }
+        }
+        
+        
+        
+    }
+    
+    //very basic and saves me from having to type this twice (literally one line saved but at least it looks cleaner)
+    private void turnSwap() {
+        if (currentTurn == 1) {
+            currentTurn = 20;
+        } else if (currentTurn == 20 ) {
+            currentTurn = 1;
+        }
     }
 
     //find the square hat the mouse is in
@@ -283,7 +331,7 @@ public class SecondaryController {
                     gamePieceOuter.get(ctr).get(ctr2).setImage(oImage);
                 }
                 else if (board.checkSpace(ctr2, ctr) == 0) {
-                    gamePieceOuter.get(ctr).get(ctr2).setImage(null);;
+                    gamePieceOuter.get(ctr).get(ctr2).setImage(null);
                 }
 
             }
@@ -291,18 +339,29 @@ public class SecondaryController {
         gameScore.setText(xWinCount + " - " + oWinCount);
     }
 
-    private void winDetect() {
+    private boolean winDetect() {
         if (board.winDetect() == 1) {
             xWinCount++;
             topText.setText("X Wins!");
+            return true;
         } else if (board.winDetect() == 20) {
             oWinCount++;
             topText.setText("O Wins!");
+            return true;
+        } else if (turnCount == 9 && board.winDetect() == 0) {
+            topText.setText("Tie!");
+            return true;
         }
+        return false;
     }
 
     //resets everything
     private void reset(){
+        
+        if (mode == 1 && CPUPiece == currentTurn) {
+            runRound();
+        }
+        
         board.resetGameBoard();
         currentTurn = 1;
         topText.setText("Tic Tac Toe");

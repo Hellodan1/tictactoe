@@ -22,8 +22,8 @@ public class PrimaryController {
     //1 easiest, 2 medium, 3 impossible (hopefully)
     public static int difficulty = 1;
 
-    //x is 0, o is 1
-    public static int  piece = 0;
+    //x is 1, o is 20 (random numbers i chose for the sake of making win detection simpler)
+    public static int piece = 1;
 
     @FXML
     Rectangle backgroundRectangle = new Rectangle(); 
@@ -47,7 +47,7 @@ public class PrimaryController {
 
     @FXML
     private void initialize() {
-        
+    
         ticTacToeLogo.setImage(ticTacToeLogoPNG);
 
         //this binding stuff basically makes the wdith of the gradient in the bacgkround have the same dimensions as the window
@@ -110,7 +110,12 @@ public class PrimaryController {
         pieceOptions.add("X");
         pieceOptions.add("O");
         pieceSelect.getItems().addAll(pieceOptions);
-        pieceSelect.getSelectionModel().select(piece);
+        if(piece == 1) {
+            pieceSelect.getSelectionModel().select(0);
+        } else {
+            pieceSelect.getSelectionModel().select(1);
+        }
+        
 
         //detects when the piece choicebox is changed
         pieceSelect.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
@@ -118,14 +123,15 @@ public class PrimaryController {
             @Override
             public void changed(ObservableValue<? extends Number> arg0, Number oldValue, Number newValue) {
                 if ((int)newValue == 0) {
-                    piece = 0;
-                } else if ((int) newValue == 1) {
                     piece = 1;
+                    System.out.println("Piece set to: " + piece);
+                } else if ((int) newValue == 1) {
+                    piece = 20;
+                    System.out.println("Piece set to: " + piece);
                 }
             }
             
         });
-
     }
 
     @FXML
