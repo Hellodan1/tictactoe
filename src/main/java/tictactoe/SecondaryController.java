@@ -263,21 +263,20 @@ public class SecondaryController {
         
         if (mode == 1) {
             if (CPUPiece == currentTurn && board.winDetect() == 0 && turnCount < 9) {
-                cpu.runCPU(board, CPUPiece);
+                cpu.runCPU(board, CPUPiece, playerStartingPiece);
                 turnCount++;
                 winDetect();
                 turnSwap();
-                refreshBoard();
             } else if (playerStartingPiece == currentTurn && board.winDetect() == 0 && turnCount < 9) {
                 if(board.checkSpace(mouseLocationFinderX(), mouseLocationFinderY()) == 0) {
                     board.placePiece(mouseLocationFinderX(), mouseLocationFinderY(), currentTurn);
                     turnCount++;
-                winDetect();
-                turnSwap();
-                refreshBoard();
+                    winDetect();
+                    turnSwap();
                 }
             }
             
+            refreshBoard();
             if (currentTurn == CPUPiece && turnCount < 9 && board.winDetect() == 0) {
                 runRound();
             }

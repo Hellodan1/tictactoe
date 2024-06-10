@@ -80,7 +80,7 @@ public class PrimaryController {
         List<String> difficultyOptions = new ArrayList<String>();
         difficultyOptions.add("Easy");
         difficultyOptions.add("Medium");
-        difficultyOptions.add("Impossible");
+        //difficultyOptions.add("Impossible");
         difficultySelect.getItems().addAll(difficultyOptions);
         difficultySelect.getSelectionModel().select(difficulty-1);
         difficultyVisibility();
@@ -97,9 +97,9 @@ public class PrimaryController {
                     case 1:
                         difficulty = 2;
                         break;
-                    case 2:
-                        difficulty = 3;
-                        break;
+                    //case 2:
+                    //    difficulty = 3;
+                    //    break;
                 }
             }
             
@@ -124,10 +124,8 @@ public class PrimaryController {
             public void changed(ObservableValue<? extends Number> arg0, Number oldValue, Number newValue) {
                 if ((int)newValue == 0) {
                     piece = 1;
-                    System.out.println("Piece set to: " + piece);
                 } else if ((int) newValue == 1) {
                     piece = 20;
-                    System.out.println("Piece set to: " + piece);
                 }
             }
             
